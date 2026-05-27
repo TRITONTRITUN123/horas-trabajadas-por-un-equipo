@@ -1,0 +1,84 @@
+recursos = []
+
+PAGO_POR_HORA = 8000
+
+
+def ingresar_trabajador(numero):
+
+    print(f"\nIngreso de datos del trabajador #{numero}")
+
+    nombre = input("Ingrese el nombre del trabajador: ")
+
+    while not nombre.isalpha():
+        print("Nombre inválido. Por favor, ingrese solo letras.")
+        nombre = input("Ingrese el nombre del trabajador: ")
+
+    horas = []
+
+    dias = ["Lunes", "Martes", "Miércoles", "Jueves", "Viernes"]
+
+    for dia in dias:
+
+        while True:
+
+            try:
+                hora = float(input(f"Ingrese las horas trabajadas el {dia}: "))
+
+                if hora < 0:
+                    print("Las horas no pueden ser negativas.")
+                else:
+                    horas.append(hora)
+                    break
+
+            except ValueError:
+                print("Valor inválido. Por favor, ingrese solo números.")
+
+    recursos.append([nombre] + horas)
+
+
+def calcular_horas(recurso):
+
+    nombre = recurso[0]
+    horas = recurso[1:]
+
+    total_horas = sum(horas)
+
+    pago_total = total_horas * PAGO_POR_HORA
+
+    if total_horas > 40:
+        clasificacion = "Sobretiempo"
+    else:
+        clasificacion = "Horario Estándar"
+
+    return nombre, total_horas, clasificacion, pago_total
+
+
+while True:
+
+    try:
+        cantidad = int(input("¿Cuántos trabajadores desea ingresar?: "))
+
+        if cantidad <= 0:
+            print("Ingrese una cantidad válida.")
+        else:
+            break
+
+    except ValueError:
+        print("Ingrese solo números enteros.")
+
+
+for i in range(cantidad):
+    ingresar_trabajador(i + 1)
+
+
+print("\nREPORTE SEMANAL DE HORAS\n")
+
+for recurso in recursos:
+
+    nombre, total, clasificacion, pago = calcular_horas(recurso)
+
+    print("Trabajador:", nombre)
+    print("Total de horas:", total)
+    print("Clasificación:", clasificacion)
+    print("Pago semanal: $", pago)
+    print("----------------------------")
